@@ -46,23 +46,30 @@ def getMorpheme(surface):
             continue
         #print(dumps(detail, indent=2, ensure_ascii=False))
 
-        if ('一段' in detail['infl']):
-            return ichidanVerb(detail)
+        # Verbs
+        if (detail['pos'] == '動詞'): 
+            if ('一段' in detail['infl']):
+                return ichidanVerb(detail)
+            elif ('五段' in detail['infl']):
+                return godanVerb(detail)
+        elif (detail['pos'] == '助動詞'):
+            if (('特殊' in detail['infl'])):
+                if (detail['root'] == 'ます'):
+                    return masu(detail)
+                if (detail['root'] == 'た'):
+                    return ta(detail)
+                if (detail['root'] == 'です'):
+                    return desu(detail)
 
-        elif ('五段' in detail['infl']):
-            return godanVerb(detail)
-
-        elif (('特殊' in detail['infl']) and (detail['pos'] == '助動詞')):
-            if (detail['root'] == 'ます'):
-                return masu(detail)
-            if (detail['root'] == 'た'):
-                return ta(detail)
             else:
                 return auxVerb(detail)
 
+        # i-adjectives
         elif (detail['pos'] == '形容詞'):
             return iAdjective(detail)
         else:
             print("Couldn't return a morpheme object for {}".format(surface))
             return None
         node = node.next
+
+

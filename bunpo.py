@@ -34,13 +34,6 @@ globals().update(contractionType.__members__)
 In this model, a "morpheme" is a generic container for some meaningful element
 in a word. In reality, a morpheme seems to be a finer-grained concept.
 I can't find a closer word (other than "word"), so let's use this.
-
-Classes for types of verbs (and verbal adjectives) should be derived from this.
-We're assuming [for now] that we get input in the dictionary form.
-
-Each class of verb should have a generic set of inflections.
-For outliers with exceptional behaviour, I think [right now] we're doomed to
-create new unique classes (because of the way I implemented inflection)?
 '''
 
 class morpheme(object):
@@ -55,6 +48,18 @@ class morpheme(object):
 
     def __str__(self):
         return self.surface
+
+''' ---------------------------------------------------------------------------
+Classes for types of verbs (and verbal adjectives) should be derived from this.
+We're assuming [for now] that we get input in the dictionary form.
+
+Each class of verb should have a generic set of inflections.
+For outliers with exceptional behaviour, I think [right now] we're doomed to
+create new unique classes (because of the way I implemented inflection)?
+
+For right now, let's treat i-adjectives in the same way we treat verbs.
+'''
+
 
 class ichidanVerb(morpheme):
     def __init__(self, detail):
@@ -170,11 +175,50 @@ class ta(auxVerb):
             self.inflection = base
         return self.surface
 
+class desu(auxVerb):
+    def __init__(self, detail):
+        super(desu, self).__init__(detail)
+        self._stem          = self.surface[:-1]
+
+    def inflect(self, base):
+        if (base == IMPERFECTIVE):
+            self.surface = self._stem + 'しょ'
+            self.inflection = base
+        elif (base == CONJUNCTIVE):
+            self.surface = self._stem + 'し'
+            self.inflection = base
+        elif (base == DICTIONARY):
+            self.surface = self._stem + 'す'
+            self.inflection = base
+        return self.surface
+
+class nVerb(auxVerb):
+    """ In Pomax' book, ん is treated as the modern dictionary/attributive 
+    form of an auxiliary verb for negation (an abbreviation of the classical 
+    verb ぬ). By itself, MeCab seems to treat ん as a sentence-final particle,
+    although in the context of ません, it is properly tagged as an auxiliary.
+    """
+
+    def __init__(self, detail):
+        super(nVerb, self).__init__(detail)
+        self._stem          = self.surface
+
+    def inflect(self, form):
+        pass
+
+
+''' ---------------------------------------------------------------------------
+'''
+
+class particle(morpheme):
+    def __init__(self, detail):
+        super(particle, self).__init__(detail)
+
+
+
 ''' ---------------------------------------------------------------------------
 I think we also technically need a container to represent contractions that
 occur between two elements.
-
-There will probably be issues with this later on :^)
 '''
 
 def checkContractionPair(x, y):
@@ -243,19 +287,17 @@ class word(object):
             s += m.surface
         return s
 
-    def append(self, *args):
-        for m in args:
+    def append(self, m):
+        # Link the new morpheme to the one at the end of the list
+        if (len(self.morphemes) >= 1):
+            m.prev = self.morphemes[-1]
 
-            # Link the new morpheme to the one at the end of the list
-            if (len(self.morphemes) >= 1):
-                m.prev = self.morphemes[-1]
+            # Potentially insert a contractionPair
+            if(self._doContraction(m)):
+                return self.morphemes
 
-                # Potentially insert a contractionPair
-                if(self._doContraction(m)):
-                    return self.morphemes
-
-            self.morphemes.append(m)
-            return self.morphemes
+        self.morphemes.append(m)
+        return self.morphemes
 
     def pop(self):
         return self.morphemes.pop()
