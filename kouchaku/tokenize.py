@@ -8,7 +8,9 @@ Wrappers for nice interactions between MeCab and stuff in `bunpo.py`.
 import MeCab
 from json import dumps
 
-from bunpo import *
+from kouchaku.word import *
+from kouchaku.aux_verb import *
+from kouchaku.verb import *
 
 # Set up arguments to the MeCab binary
 mecab = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd/")
@@ -30,10 +32,16 @@ def getDetail(node):
     }
     return detail
 
-def getMorpheme(surface):
-    """ Use MeCab to return a single morpheme object from input """
+def getNode(surface):
+    """ Give some surface element/s, return MeCab node objects """
     text = mecab.parse(surface)
     node = mecab.parseToNode(surface)
+    return node
+
+
+def getMorpheme(surface):
+    """ Use MeCab to return a single morpheme object from input """
+    node = getNode(surface)
 
     while node:
         if node.surface in [' ', '', '\n']:
@@ -52,6 +60,7 @@ def getMorpheme(surface):
                 return ichidanVerb(detail)
             elif ('五段' in detail['infl']):
                 return godanVerb(detail)
+
         elif (detail['pos'] == '助動詞'):
             if (('特殊' in detail['infl'])):
                 if (detail['root'] == 'ます'):
@@ -60,7 +69,6 @@ def getMorpheme(surface):
                     return ta(detail)
                 if (detail['root'] == 'です'):
                     return desu(detail)
-
             else:
                 return auxVerb(detail)
 

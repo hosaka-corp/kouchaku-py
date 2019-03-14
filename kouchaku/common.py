@@ -1,8 +1,39 @@
 #!/usr/bin/python3
+# coding: utf-8
 
-# Big list of linguistic terminology used in mecab.
-# You might want to find some way of tying this back to
-# the EDICT tags for word types (if that isn't too hard)
+from enum import Enum
+
+''' ---------------------------------------------------------------------------
+Use Enums to make references to different properties of things somewhat easier.
+You can avoid specifying the whole class if you add them to `globals()`.
+'''
+
+class inflectionType(Enum):
+    IMPERFECTIVE    = 1
+    CONJUNCTIVE     = 2
+    DICTIONARY      = 3
+    PERFECTIVE      = 4
+    IMPERATIVE      = 5
+
+class verbType(Enum):
+    GODAN           = 1
+    ICHIDAN         = 2
+    AUX             = 4
+
+class contractionType(Enum):
+    GODAN_TA        = 1
+
+# Nice hack for excluding Enum classname when using these
+globals().update(inflectionType.__members__)
+globals().update(verbType.__members__)
+globals().update(contractionType.__members__)
+
+
+''' ---------------------------------------------------------------------------
+Big list of linguistic terminology used in mecab. You might want to find some 
+way of tying this back to the EDICT tags for word types?
+'''
+
 terminology = {
     "接尾": "suffix",
     "名詞": "noun", 
@@ -44,7 +75,12 @@ terminology = {
 
 }
 
-# Given some u- syllable, return the consonant row
+
+''' ---------------------------------------------------------------------------
+Hiragana tables.
+Used for implementing inflection on Godan verbs, among other things.
+'''
+
 ctable = {
     'う': [ 'わ', 'い', 'う', 'え', 'お' ],
     'す': [ 'さ', 'し', 'す', 'せ', 'そ' ],

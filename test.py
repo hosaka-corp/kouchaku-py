@@ -4,19 +4,12 @@
 ''' test.py 
 '''
 
-from tokenize import *
-from bunpo import *
-from common_forms import *
+from kouchaku.conjugate import *
 
-# Convert 食べる into 食べませんでした
-root = "食べる"
-w = word()
-w.append(getMorpheme(root))
-w.inflect(CONJUNCTIVE)
-w.append(MASU)
-w.inflect(IMPERFECTIVE)
-w.append(N)
-w.append(DESU)
-w.inflect(CONJUNCTIVE)
-w.append(TA)
-print("{}\t → {}".format(root, w))
+print("食べる becomes {}".format(plainPast("食べる")))
+print("食べる becomes {}".format(plainNegative("食べる")))
+print("食べる becomes {}".format(plainNegativePast("食べる")))
+
+print("飲む becomes {}".format(plainPast("飲む")))
+print("飲む becomes {}".format(plainNegative("飲む")))
+print("飲む becomes {}".format(plainNegativePast("飲む")))
