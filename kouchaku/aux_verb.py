@@ -8,21 +8,21 @@ Define all relevant auxiliary verbs that behave in some exceptional way.
 from kouchaku.verb import auxVerb
 from kouchaku.common import *
 
-masu_detail = { 
-    'surface': 'ます', 
-    'pos': '助動詞', 
-    'sub1': None, 
-    'sub2': None, 
-    'sub3': None, 
-    'infl': '特殊・マス',
-    'conj': '基本形',
-    'root': 'ます', 
-    'reading': 'マス', 
-    'hatsuon': 'マス',
+masu_detail = {
+    'surface':      'ます',
+    'pos':          '助動詞',
+    'sub1':         None,
+    'sub2':         None,
+    'sub3':         None,
+    'infl':         '特殊・マス',
+    'conj':         '基本形',
+    'root':         'ます',
+    'reading':      'マス',
+    'hatsuon':      'マス',
 }
 
 class masu(auxVerb):
-    def __init__(self, detail):
+    def __init__(self):
         super(masu, self).__init__(masu_detail)
         self._stem = self.surface[:-1]
 
@@ -45,17 +45,17 @@ class masu(auxVerb):
         return self.surface
 
 
-ta_detail = { 
-    'surface': 'た', 
-    'pos': '助動詞', 
-    'sub1': None, 
-    'sub2': None, 
-    'sub3': None, 
-    'infl': '特殊・タ',
-    'conj': '基本形',
-    'root': 'た', 
-    'reading': 'タ', 
-    'hatsuon': 'タ',
+ta_detail = {
+    'surface':      'た',
+    'pos':          '助動詞',
+    'sub1':         None,
+    'sub2':         None,
+    'sub3':         None,
+    'infl':         '特殊・タ',
+    'conj':         '基本形',
+    'root':         'た',
+    'reading':      'タ',
+    'hatsuon':      'タ',
 }
 
 
@@ -77,17 +77,17 @@ class ta(auxVerb):
         return self.surface
 
 
-desu_detail = { 
-    'surface': 'です', 
-    'pos': '助動詞', 
-    'sub1': None, 
-    'sub2': None, 
-    'sub3': None, 
-    'infl': '特殊・デス',
-    'conj': '基本形',
-    'root': 'です', 
-    'reading': 'デス', 
-    'hatsuon': 'デス',
+desu_detail = {
+    'surface':      'です',
+    'pos':          '助動詞',
+    'sub1':         None,
+    'sub2':         None,
+    'sub3':         None,
+    'infl':         '特殊・デス',
+    'conj':         '基本形',
+    'root':         'です',
+    'reading':      'デス',
+    'hatsuon':      'デス',
 }
 
 class desu(auxVerb):
@@ -109,22 +109,22 @@ class desu(auxVerb):
 
 
 
-nVerb_detail = { 
-    'surface': 'ん', 
-    'pos': '助動詞', 
-    'sub1': None, 
-    'sub2': None, 
-    'sub3': None, 
-    'infl': '不変化型',
-    'conj': '基本形',
-    'root': 'ん', 
-    'reading': 'ン', 
-    'hatsuon': 'ン',
+nVerb_detail = {
+    'surface':      'ん',
+    'pos':          '助動詞',
+    'sub1':         None,
+    'sub2':         None,
+    'sub3':         None,
+    'infl':         '不変化型',
+    'conj':         '基本形',
+    'root':         'ん',
+    'reading':      'ン',
+    'hatsuon':      'ン',
 }
 
 class nVerb(auxVerb):
-    """ In Pomax' book, ん is treated as the modern dictionary/attributive 
-    form of an auxiliary verb for negation (an abbreviation of the classical 
+    """ In Pomax' book, ん is treated as the modern dictionary/attributive
+    form of an auxiliary verb for negation (an abbreviation of the classical
     verb ぬ). By itself, MeCab seems to treat ん as a sentence-final particle,
     although in the context of ません, it is properly tagged as an auxiliary.
     """

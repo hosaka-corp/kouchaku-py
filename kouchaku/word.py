@@ -43,16 +43,25 @@ class word(object):
         return s
 
     def append(self, m):
-        # Link the new morpheme to the one at the end of the list
-        if (len(self.morphemes) >= 1):
-            m.prev = self.morphemes[-1]
+        self.morphemes.append(m)
 
-            # Potentially insert a contraction
-            if(self._doContraction(m)):
+        # If there's only one element in the word, just add it and return
+        if (len(self.morphemes) == 1):
+            return self.morphemes
+
+        # Always link the new element to the previous one
+        self.morphemes[-1].prev = self.morphemes[-2]
+
+        # Check and apply [potentially nested] contractions
+        while (checkContractionPair(self.morphemes[-2], self.morphemes[-1])):
+            y = self.morphemes.pop()
+            x = self.morphemes.pop()
+            self.morphemes.append(contractionPair(x, y))
+            if (len(self.morphemes) == 1):
                 return self.morphemes
 
-        self.morphemes.append(m)
         return self.morphemes
+
 
     def pop(self):
         return self.morphemes.pop()
@@ -64,16 +73,4 @@ class word(object):
     def inflect(self, form):
         """ Inflect the terminal element in the word """
         self.morphemes[-1].inflect(form)
-
-    def _doContraction(self, m):
-        """ Only checks 'x' with the terminal element.
-        Returns True if we've modified the list, otherwise return None.
-        """
-        if (checkContractionPair(self.morphemes[-1], m)):
-            x = self.morphemes.pop()
-            c = contractionPair(x, m)
-            self.morphemes.append(c)
-            return True
-        else:
-            return None
 

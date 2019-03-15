@@ -55,7 +55,7 @@ def getMorpheme(surface):
         #print(dumps(detail, indent=2, ensure_ascii=False))
 
         # Verbs
-        if (detail['pos'] == '動詞'): 
+        if (detail['pos'] == '動詞'):
             if ('一段' in detail['infl']):
                 return ichidanVerb(detail)
             elif ('五段' in detail['infl']):

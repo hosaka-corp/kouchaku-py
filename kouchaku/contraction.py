@@ -12,18 +12,23 @@ I think we also technically need a container to represent contractions that
 occur between two elements.
 '''
 
-def checkContractionPair(x, y):
-    """ Only checks 'x' with the terminal element.
-    Returns some value in the contractionType enum.
-    Returns None if no contraction has been applied.
-    """
-    # Contractions between Godan verbs and the た auxiliary when the verb is
-    # in the conjunctive form. This doesn't occur with verbs that end in す.
-    if ((isinstance(x, godanVerb)) and (isinstance(y, ta)) 
-            and (x._consonant != 'す') and (x.inflection == CONJUNCTIVE)):
-        return GODAN_TA
+def checkClass(x, c1, y, c2):
+    if ((isinstance(x, c1)) and (isinstance(y, c2))):
+        return True
     else:
         return None
+
+def checkContractionPair(x, y):
+    """ If we find a contraction, return the contraction type """
+
+    if (checkClass(x, godanVerb, y, ta)):
+        return GODAN_TA
+
+    if (checkClass(x, nai, y, contractionPair)):
+        if ((x.inflection == CONJUNCTIVE) and (y.type == GODAN_TA)):
+            return NAKATTA
+
+    return None
 
 class contractionPair(object):
     def __init__(self, x, y):
@@ -44,5 +49,6 @@ class contractionPair(object):
             elif ((cons == 'う') or (cons == 'つ') or (cons == 'る')):
                 surface += 'った'
             return surface
-
-
+        if (self.type == NAKATTA):
+            surface     = 'なかった'
+            return surface
