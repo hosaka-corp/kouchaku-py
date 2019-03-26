@@ -22,7 +22,8 @@ class verbType(Enum):
 
 class contractionType(Enum):
     GODAN_TA        = 1
-    NAKATTA         = 2
+    GODAN_TSU       = 2
+    NAKATTA         = 3
 
 # Nice hack for excluding Enum classname when using these
 globals().update(inflectionType.__members__)

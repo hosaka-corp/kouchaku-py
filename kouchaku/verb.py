@@ -106,3 +106,39 @@ class aru(godanVerb):
         return self.surface
 
 
+suru_detail = { 
+    'surface': 'する', 
+    'pos': '動詞', 
+    'sub1': '自立', 
+    'sub2': None, 
+    'sub3': None, 
+    'infl': '五段・ラ行',
+    'conj': '基本形',
+    'root': 'する', 
+    'reading': 'スル', 
+    'hatsuon': 'スル',
+}
+
+class suru(godanVerb):
+    def __init__(self):
+        super(suru, self).__init__(suru_detail)
+
+    def inflect(self, base):
+        if (base == IMPERFECTIVE):
+            # Apparently this may be さ, せ, or し
+            self.surface = 'さ'
+            self.inflection = base
+        elif (base == CONJUNCTIVE):
+            self.surface = 'し'
+            self.inflection = base
+        elif (base == DICTIONARY):
+            self.surface = self._stem + 'る'
+            self.inflection = base
+        elif (base == PERFECTIVE):
+            self.surface = self._stem + 'れ'
+            self.inflection = base
+        elif (base == IMPERATIVE):
+            self.surface = self._stem + 'れ'
+            self.inflection = base
+        return self.surface
+

@@ -136,3 +136,47 @@ class nVerb(auxVerb):
     def inflect(self, form):
         pass
 
+
+tsuVerb_detail = {
+    'surface':      'つ',
+    'pos':          '助動詞',
+    'sub1':         None,
+    'sub2':         None,
+    'sub3':         None,
+    'infl':         '下二・タ行',
+    'conj':         '基本形',
+    'root':         'つ',
+    'reading':      'ツ',
+    'hatsuon':      'ツ',
+}
+
+class tsuVerb(auxVerb):
+    """
+    Apparently, the auxiliary て is is classically つ - but I think that, 
+    whenever this is used, it's always inflected to the "conjunctive" form.
+    Whenever we create a new instance of this, just automatically inflect to
+    the conjunctive form.
+    """
+    def __init__(self, detail=None):
+        super(tsuVerb, self).__init__(tsuVerb_detail)
+        self._stem = self.surface
+        self.inflect(CONJUNCTIVE)
+
+    def inflect(self, base):
+        if (base == IMPERFECTIVE):
+            self.surface = 'て'
+            self.inflection = base
+        elif (base == CONJUNCTIVE):
+            self.surface = 'て'
+            self.inflection = base
+        elif (base == DICTIONARY):
+            self.surface = self._stem + 'す'
+            self.inflection = base
+        elif (base == PERFECTIVE):
+            self.surface = self._stem + 'れ'
+            self.inflection = base
+        elif (base == IMPERATIVE):
+            self.surface = 'てよ'
+            self.inflection = base
+        return self.surface
+

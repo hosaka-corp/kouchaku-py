@@ -3,12 +3,17 @@
 
 from kouchaku.conjugate import *
 
-word = "飲む"
+word = [ "会う", "登る", "遊ぶ", "話す", "飲む", "待つ",
+        "上げる", "生きる",
+]
 
-print("{} to {}".format(word, plainPast(word)))
-print("{} to {}".format(word, plainNegative(word)))
-print("{} to {}".format(word, plainNegativePast(word)))
-print("{} to {}".format(word, polite(word)))
-print("{} to {}".format(word, politePast(word)))
-print("{} to {}".format(word, politeNegative(word)))
-print("{} to {}".format(word, politeNegativePast(word)))
+for w in word:
+    print("{} to {}".format(w, plainPast(w)))
+    print("{} to {}".format(w, plainNegative(w)))
+    print("{} to {}".format(w, plainNegativePast(w)))
+    print("{} to {}".format(w, polite(w)))
+    print("{} to {}".format(w, politePast(w)))
+    print("{} to {}".format(w, politeNegative(w)))
+    print("{} to {}".format(w, politeNegativePast(w)))
+    print("{} to {}".format(w, continuative(w)))
+    print()
